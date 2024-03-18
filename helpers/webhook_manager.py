@@ -41,6 +41,17 @@ class WebHookManager:
     def __motion(self, ip, friendly_name, hostname, serial_number, zone, file_name, _time, url, encoding, timeout):
         return {"ip": ip, "friendly_name": friendly_name, "hostname": hostname, "serial_number": serial_number, "zone": zone, "file_name": file_name, "time": _time}
 
+    ### MOTION TIMEOUT ###
+
+    def motion_timeout(self, ip, friendly_name, hostname, serial_number):
+        r = self.__motion_timeout(ip, friendly_name, hostname, serial_number, time.time(),
+                        url=self.config['MotionTimeoutWebHookUrl'], encoding="application/json", timeout=5)
+        s_print(str(r))
+
+    @webhook(sender_callable=targeted.sender)
+    def __motion_timeout(self, ip, friendly_name, hostname, serial_number, _time, url, encoding, timeout):
+        return {"ip": ip, "friendly_name": friendly_name, "hostname": hostname, "serial_number": serial_number, "time": _time}
+
     ### BUTTON PRESSED ###
 
     def button_pressed(self, ip, friendly_name, hostname, serial_number, triggered):

@@ -40,6 +40,7 @@ with sqlite3.connect('arlo.db') as conn:
 WIFI_COUNTRY_CODE = config.get('WifiCountryCode', "US")
 VIDEO_ANTI_FLICKER_RATE = config.get('VideoAntiFlickerRate', 60)
 NOTIFY_ON_MOTION_ALERT = config.get('NotifyOnMotionAlert', True)
+NOTIFY_ON_MOTION_TIMEOUT_ALERT = config.get('NotifyOnMotionTimeoutAlert', False)
 NOTIFY_ON_AUDIO_ALERT = config.get('NotifyOnAudioAlert', False)
 NOTIFY_ON_BUTTON_PRESS_ALERT = config.get('NotifyOnButtonPressAlert', True)
 
@@ -98,9 +99,9 @@ class ConnectionThread(threading.Thread):
                         webhook_manager.button_pressed(
                             device.ip, device.friendly_name, device.hostname, device.serial_number,
                             msg['ButtonPress']['Triggered'])
-                    elif alert_type == "motionTimeoutAlert":
-                        # We don't care, we rely on the clients to determine when motion is completed.
-                        ...
+                    elif alert_type == "motionTimeoutAlert" and NOTIFY_ON_MOTION_TIMEOUT_ALERT:
+                        webhook_manager.motion_timeout(
+                            device.ip, device.friendly_name, device.hostname, device.serial_number)
                     else:
                         s_print(f"<[{self.ip}][{msg['ID']}] Unknown alert type")
                         s_print(msg)

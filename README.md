@@ -28,6 +28,7 @@ First, create a `config.yaml` file (available in this repo) that will be used to
 WifiCountryCode: "US"
 VideoAntiFlickerRate: 60
 NotifyOnMotionAlert: true
+NotifyOnMotionTimeoutAlert: false
 NotifyOnAudioAlert: false
 NotifyOnButtonPressAlert: true
 MotionRecordingWebHookUrl: "http://192.168.1.100:4321/endpoint/@scrypted/arlo-local/public/motionDetected"
@@ -44,6 +45,7 @@ You'll want to replace the `WifiCountryCode` with your two-letter ISO3166-1 alph
 - `RegistrationWebHookUrl`
 - `StatusUpdateWebHookUrl`
 - `MotionRecordingWebHookUrl`
+- `MotionTimeoutWebHookUrl`
 - `ButtonPressWebHookUrl`
 
 If you are using this server with Scrypted:
@@ -51,7 +53,7 @@ If you are using this server with Scrypted:
 - Replace `StatusUpdateWebHookUrl` with the `Status Update Webhook` from the Scrypted plugin configuration.
 - Replace `MotionRecordingWebHookUrl` with the `Motion Sensor Webhook` from the Scrypted plugin configuration.
 - Replace `ButtonPressWebHookUrl` with the Status `Button Press Webhook` from the Scrypted plugin configuration.
-
+- Note: `MotionTimeoutWebHookUrl` is not used with Scrypted
 ## Run the Server
 
 ### Using Docker Compose (recommended)
@@ -248,6 +250,17 @@ The FFmpeg library doesn't send RTCP Receiver Response messages very often, and 
 
 Blocking ALL RTCP (by dropping all UDP) appears to allow FFMPEG to function, as the cameras dont mind if no RTCP responses are received. However, if the connection dies without a TEARDOWN from the client then the cameras may just keep sending RTP packets and may require a reboot as they don't know the client has disconnected.
 
+[mediamtx](https://github.com/bluenviron/mediamtx) v1.6.0 seems to work very well.   Here's a sample `mediamtx.yml`:
+```
+paths:
+  mycamera:
+    source: rtsp://IP/live
+    sourceOnDemand: yes
+    sourceAnyPortEnable: yes
+    sourceOnDemandCloseAfter: 1s
+    maxReaders: 1
+```
+You can use FFmpeg save the video by streaming from mediamtx.  You can also live stream by connecting mediamtx's webrtc/hls port on a browser.
 ## Audio Streaming to the Camera
 
 The UDP port 5000 on the cameras constantly listens for RTP traffic with the following encoding:
