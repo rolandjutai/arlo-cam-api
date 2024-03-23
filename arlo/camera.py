@@ -17,7 +17,7 @@ class Camera(Device):
     def port(self):
         return 4000
 
-    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None):
+    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None, video_quality_default='default'):
         if self.model_number.startswith('VMC5040'):
             registerSet = Message(copy.deepcopy(arlo.messages.REGISTER_SET_INITIAL_ULTRA))
         elif self.model_number.startswith('FB1001'):
@@ -29,7 +29,10 @@ class Camera(Device):
         registerSet['SetValues']['VideoAntiFlickerRate'] = video_anti_flicker_rate
         self.send_message(registerSet)
 
-        self.set_quality({'quality': 'insane'})
+        if video_quality_default == 'default':
+            video_quality_default = 'insane'
+
+        self.set_quality({'quality': video_quality_default})
 
     def pir_led(self, args):
         register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))

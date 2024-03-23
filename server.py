@@ -39,6 +39,7 @@ with sqlite3.connect('arlo.db') as conn:
 
 WIFI_COUNTRY_CODE = config.get('WifiCountryCode', "US")
 VIDEO_ANTI_FLICKER_RATE = config.get('VideoAntiFlickerRate', 60)
+VIDEO_QUALITY_DEFAULT = config.get('VideoQualityDefault', 'default')
 NOTIFY_ON_MOTION_ALERT = config.get('NotifyOnMotionAlert', True)
 NOTIFY_ON_MOTION_TIMEOUT_ALERT = config.get('NotifyOnMotionTimeoutAlert', False)
 NOTIFY_ON_AUDIO_ALERT = config.get('NotifyOnAudioAlert', False)
@@ -71,7 +72,7 @@ class ConnectionThread(threading.Thread):
                     DeviceDB.persist(device)
                     s_print(f"<[{self.ip}][{msg['ID']}] Registration from {msg['SystemSerialNumber']} - {device.hostname}")
 
-                    device.send_initial_register_set(WIFI_COUNTRY_CODE, VIDEO_ANTI_FLICKER_RATE)
+                    device.send_initial_register_set(WIFI_COUNTRY_CODE, VIDEO_ANTI_FLICKER_RATE, VIDEO_DEFAULT_QUALITY)
                     webhook_manager.registration_received(
                         device.ip, device.friendly_name, device.hostname, device.serial_number, device.registration)
                 elif (msg['Type'] == "status"):

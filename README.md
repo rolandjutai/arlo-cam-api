@@ -12,6 +12,10 @@ You can't use the camera's native direct-join-to-WiFi functionality; you must pa
 
 Finally, while you can use the API to control the camera (e.g. set quality, arm/disarm), there is NO state maintained; if the camera restarts, or falls off WiFi and rejoins/reregisters, it will be reprovisioned with the defaults, so you will need to issue your commands to the camera again.
 
+The default video quality can be set with the `VideoQualityDefault` config option.  The options are device specific.
+* Cameras: `low`, `medium`, `high`, `subscription`, `insane`.  Default: `insane`
+* Door Bells: `720sq`, `1080sq`, `1536sq`.  Default: `1536sq`
+
 ## Tested Working Hardware
 
 - Ultra (VMC5040)
@@ -27,6 +31,7 @@ First, create a `config.yaml` file (available in this repo) that will be used to
 ```
 WifiCountryCode: "US"
 VideoAntiFlickerRate: 60
+VideoQualityDefault: "default"
 NotifyOnMotionAlert: true
 NotifyOnMotionTimeoutAlert: false
 NotifyOnAudioAlert: false

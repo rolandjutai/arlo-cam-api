@@ -14,7 +14,7 @@ class VideoDoorbell(Camera):
     def port(self):
         return 4000
 
-    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None):
+    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None, video_quality_default='default'):
         registerSet = Message(copy.deepcopy(arlo.messages.REGISTER_SET_INITIAL_VID_DOORBELL))
         self.send_message(registerSet, 4100)
 
@@ -23,7 +23,10 @@ class VideoDoorbell(Camera):
         registerSet['SetValues']['VideoAntiFlickerRate'] = video_anti_flicker_rate
         self.send_message(registerSet)
 
-        self.set_quality({'quality': '1536sq'})
+        if video_quality_default == 'default':
+            video_quality_default = '1536sq'
+
+        self.set_quality({'quality': video_quality_default})
 
     def set_quality(self, args):
         quality = args['quality'].lower()
