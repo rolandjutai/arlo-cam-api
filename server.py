@@ -44,6 +44,7 @@ NOTIFY_ON_MOTION_ALERT = config.get('NotifyOnMotionAlert', True)
 NOTIFY_ON_MOTION_TIMEOUT_ALERT = config.get('NotifyOnMotionTimeoutAlert', False)
 NOTIFY_ON_AUDIO_ALERT = config.get('NotifyOnAudioAlert', False)
 NOTIFY_ON_BUTTON_PRESS_ALERT = config.get('NotifyOnButtonPressAlert', True)
+NOTIFY_REGISTERD_AND_STATUS_UPDATE = config.get('NotifyRegisteredAndStatusUpdate', True)
 
 
 class ConnectionThread(threading.Thread):
@@ -73,16 +74,18 @@ class ConnectionThread(threading.Thread):
                     s_print(f"<[{self.ip}][{msg['ID']}] Registration from {msg['SystemSerialNumber']} - {device.hostname}")
 
                     device.send_initial_register_set(WIFI_COUNTRY_CODE, VIDEO_ANTI_FLICKER_RATE, VIDEO_QUALITY_DEFAULT)
-                    webhook_manager.registration_received(
-                        device.ip, device.friendly_name, device.hostname, device.serial_number, device.registration)
+                    if NOTIFY_REGISTERD_AND_STATUS_UPDATE:
+                        webhook_manager.registration_received(
+                            device.ip, device.friendly_name, device.hostname, device.serial_number, device.registration)
                 elif (msg['Type'] == "status"):
                     s_print(f"<[{self.ip}][{msg['ID']}] Status from {msg['SystemSerialNumber']}")
                     device = DeviceDB.from_db_serial(msg['SystemSerialNumber'])
                     device.ip = self.ip
                     device.status = msg
                     DeviceDB.persist(device)
-                    webhook_manager.status_received(device.ip, device.friendly_name,
-                                                    device.hostname, device.serial_number, device.status)
+                    if NOTIFY_REGISTERD_AND_STATUS_UPDATE:
+                        webhook_manager.status_received(device.ip, device.friendly_name,
+                                                        device.hostname, device.serial_number, device.status)
                     device.send_epoch_bs_time()
                 elif (msg['Type'] == "alert"):
                     device = DeviceDB.from_db_ip(self.ip)
