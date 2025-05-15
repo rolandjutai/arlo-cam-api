@@ -88,21 +88,25 @@ class ConnectionThread(threading.Thread):
                     device = DeviceDB.from_db_ip(self.ip)
                     alert_type = msg['AlertType']
                     s_print(f"<[{self.ip}][{msg['ID']}] {msg['AlertType']}")
-                    if alert_type == "pirMotionAlert" and NOTIFY_ON_MOTION_ALERT:
-                        webhook_manager.motion_detected(
-                            device.ip, device.friendly_name, device.hostname, device.serial_number,
-                            msg['PIRMotion'].get('zones', []),
-                            "")
-                    elif alert_type == "audioAlert" and NOTIFY_ON_AUDIO_ALERT:
-                        # TODO: implement this
-                        ...
-                    elif alert_type == "buttonPressAlert" and NOTIFY_ON_BUTTON_PRESS_ALERT:
-                        webhook_manager.button_pressed(
-                            device.ip, device.friendly_name, device.hostname, device.serial_number,
-                            msg['ButtonPress']['Triggered'])
-                    elif alert_type == "motionTimeoutAlert" and NOTIFY_ON_MOTION_TIMEOUT_ALERT:
-                        webhook_manager.motion_timeout(
-                            device.ip, device.friendly_name, device.hostname, device.serial_number)
+                    if alert_type == "pirMotionAlert" :
+                        if NOTIFY_ON_MOTION_ALERT:
+                            webhook_manager.motion_detected(
+                                device.ip, device.friendly_name, device.hostname, device.serial_number,
+                                msg['PIRMotion'].get('zones', []),
+                                "")
+                    elif alert_type == "audioAlert":
+                        if NOTIFY_ON_AUDIO_ALERT:
+                            # TODO: implement this
+                            ...
+                    elif alert_type == "buttonPressAlert":
+                        if NOTIFY_ON_BUTTON_PRESS_ALERT:
+                            webhook_manager.button_pressed(
+                                device.ip, device.friendly_name, device.hostname, device.serial_number,
+                                msg['ButtonPress']['Triggered'])
+                    elif alert_type == "motionTimeoutAlert":
+                        if NOTIFY_ON_MOTION_TIMEOUT_ALERT:
+                            webhook_manager.motion_timeout(
+                                device.ip, device.friendly_name, device.hostname, device.serial_number)
                     else:
                         s_print(f"<[{self.ip}][{msg['ID']}] Unknown alert type")
                         s_print(msg)
