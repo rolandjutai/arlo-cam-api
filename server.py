@@ -114,7 +114,7 @@ class ConnectionThread(threading.Thread):
                         s_print(f"<[{self.ip}][{msg['ID']}] Unknown alert type")
                         s_print(msg)
                 elif (msg['Type'] == "logMessage"):
-                    s_print(f"<[{self.ip}][{msg['ID']}] {msg['AlertType']} {msg['LogString']}")
+                    s_print(f"<[{self.ip}][{msg['ID']}] {msg['LogString']}")
                 else:
                     s_print(f"<[{self.ip}][{msg['ID']}] Unknown message")
                     s_print(msg)
