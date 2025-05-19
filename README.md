@@ -70,7 +70,6 @@ If you are using this server with Scrypted:
 1. (Optional) Create a file to store the sqlite database used by the server and mount it.
 
 ```
-version: '3.8'
 services:
   arlo-cam-api:
     container_name: 'arlo-cam-api'
