@@ -1,4 +1,4 @@
-WifiCountryCode: "US"
+WifiCountryCode: "AU"
 VideoAntiFlickerRate: 60
 VideoQualityDefault: "default"
 NotifyRegisteredAndStatusUpdate: true
@@ -6,10 +6,10 @@ NotifyOnMotionAlert: true
 NotifyOnMotionTimeoutAlert: false
 NotifyOnAudioAlert: false
 NotifyOnButtonPressAlert: true
-MotionRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/motionDetected"
+MotionRecordingWebHookUrl: "http://homeassistant.local:11080/endpoint/@scrypted/arlo-local/public/motionDetected"
 MotionTimeoutWebHookUrl: "changeme"
-AudioRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/"
-UserRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/"
-StatusUpdateWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
-RegistrationWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/registered"
-ButtonPressWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
+AudioRecordingWebHookUrl: "http://homeassistant.local:11080/endpoint/@scrypted/arlo-local/public/"
+UserRecordingWebHookUrl: "http://homeassistant.local:11080/endpoint/@scrypted/arlo-local/public/"
+StatusUpdateWebHookUrl: "http://homeassistant.local:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
+RegistrationWebHookUrl: "http://homeassistant.local:11080/endpoint/@scrypted/arlo-local/public/registered"
+ButtonPressWebHookUrl: "http://homeassistant.local:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
